@@ -1,5 +1,6 @@
 import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
+import { UPLOADS_ROOT } from "./upload-storage";
 
 const MAX_DOCUMENT_BYTES = 15 * 1024 * 1024;
 const ALLOWED_DOCUMENT_TYPES: Record<string, string> = {
@@ -26,7 +27,7 @@ export function documentFileType(file: File): string {
 }
 
 export async function saveUploadedFile(file: File, subdir: string, baseName: string) {
-  const uploadDir = path.join(process.cwd(), "public", "uploads", subdir);
+  const uploadDir = path.join(UPLOADS_ROOT, subdir);
   await mkdir(uploadDir, { recursive: true });
 
   const ext = path.extname(file.name) || `.${file.type.split("/")[1] ?? "bin"}`;
@@ -39,5 +40,5 @@ export async function saveUploadedFile(file: File, subdir: string, baseName: str
 
 export async function deleteUploadedFile(url: string | null | undefined, subdir: string) {
   if (!url || !url.startsWith(`/uploads/${subdir}/`)) return;
-  await unlink(path.join(process.cwd(), "public", url)).catch(() => {});
+  await unlink(path.join(UPLOADS_ROOT, url.slice("/uploads/".length))).catch(() => {});
 }

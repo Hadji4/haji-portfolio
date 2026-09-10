@@ -24,8 +24,9 @@
 .DS_Store
 *.pem
 
-# user-uploaded content (admin avatars, etc.)
-/public/uploads
+# user-uploaded content (admin avatars, etc.) — served via the
+# /uploads/[...path] route handler, not directly from public/
+/storage/uploads
 
 # debug
 npm-debug.log*

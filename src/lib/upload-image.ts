@@ -1,5 +1,6 @@
 import { mkdir, unlink, writeFile } from "fs/promises";
 import path from "path";
+import { UPLOADS_ROOT } from "./upload-storage";
 
 const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
@@ -12,7 +13,7 @@ export function validateImageFile(value: FormDataEntryValue | null): string | nu
 }
 
 export async function saveUploadedImage(file: File, subdir: string, baseName: string) {
-  const uploadDir = path.join(process.cwd(), "public", "uploads", subdir);
+  const uploadDir = path.join(UPLOADS_ROOT, subdir);
   await mkdir(uploadDir, { recursive: true });
 
   const ext = path.extname(file.name) || `.${file.type.split("/")[1]}`;
@@ -25,5 +26,5 @@ export async function saveUploadedImage(file: File, subdir: string, baseName: st
 
 export async function deleteUploadedImage(url: string | null | undefined, subdir: string) {
   if (!url || !url.startsWith(`/uploads/${subdir}/`)) return;
-  await unlink(path.join(process.cwd(), "public", url)).catch(() => {});
+  await unlink(path.join(UPLOADS_ROOT, url.slice("/uploads/".length))).catch(() => {});
 }
