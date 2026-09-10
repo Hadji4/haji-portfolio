@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String
+  summary     String   @db.VarChar(300)
+  description String   @db.Text
+  techStack   Json
+  features    Json
+  scale       String?
+  liveUrl     String?
+  repoNote    String?
+  accent      String   @default("violet")
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([order])
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  category String
+  name     String
+  order    Int    @default(0)
+
+  @@index([category])
+}
+
+model Experience {
+  id           String  @id @default(cuid())
+  role         String
+  organization String
+  period       String?
+  description  String  @db.Text
+  order        Int     @default(0)
+}
+
+model Education {
+  id          String  @id @default(cuid())
+  title       String
+  institution String?
+  order       Int     @default(0)
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([read])
+}
+
+model GalleryItem {
+  id        String   @id @default(cuid())
+  imageUrl  String
+  mediaType String   @default("image")
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([order])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  title     String
+  category  String
+  fileUrl   String
+  fileType  String?
+  published Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([published])
+}
+
+model BlogPost {
+  id            String    @id @default(cuid())
+  slug          String    @unique
+  title         String
+  excerpt       String    @db.VarChar(300)
+  content       String    @db.Text
+  coverImageUrl String?
+  tags          Json
+  published     Boolean   @default(false)
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([published, publishedAt])
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String   @db.VarChar(300)
+  visitorId String
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt])
+  @@index([visitorId])
+}
+
+model SiteSettings {
+  id           Int      @id @default(1)
+  heroName     String   @default("Haji Omer Sheno")
+  heroTitle    String   @default("Digital Health Systems Architect")
+  heroIntro    String   @db.Text
+  heroPhotoUrl String?
+  stats        Json
+  email        String   @default("hadjiomer9@gmail.com")
+  phone        String   @default("+251927325044")
+  github       String?
+  telegram     String?
+  cvUrl        String?
+  updatedAt    DateTime @updatedAt
+}
