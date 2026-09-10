@@ -94,8 +94,8 @@ export function Navbar({
 
   useEffect(() => {
     if (pathname !== "/") return;
-    const anchorIds = NAV_ITEMS.filter((item) => item.kind === "anchor").map((item) =>
-      item.href.slice(2),
+    const anchorIds = NAV_ITEMS.filter((item) => item.kind === "anchor").map(
+      (item) => item.href.slice(2),
     );
     const sections = anchorIds
       .map((id) => document.getElementById(id))
@@ -145,71 +145,85 @@ export function Navbar({
       : pathname === item.href || pathname.startsWith(`${item.href}/`);
 
   return (
-    <header
-      className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
-        scrolled
-          ? "border-white/10 bg-[var(--background)]/80 backdrop-blur-xl"
-          : "border-transparent bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
-        <Link href="/" className="flex items-center gap-2.5">
-          <NavbarLogo photoUrl={photoUrl} name={name} size={36} />
-          <span className="font-display hidden text-lg font-bold text-foreground sm:inline">
-            {name}
-          </span>
-        </Link>
+    <>
+      <header
+        className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
+          scrolled
+            ? "border-white/10 bg-[var(--background)]/80 backdrop-blur-xl"
+            : "border-transparent bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-3 lg:px-10">
+          <Link href="/" className="flex items-center gap-2.5">
+            <NavbarLogo photoUrl={photoUrl} name={name} size={36} />
+            <span className="font-display hidden text-lg font-bold text-foreground sm:inline">
+              {name}
+            </span>
+          </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
-          {NAV_ITEMS.map((item) => {
-            const active = isActive(item);
-            const className = `rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
-              active ? "text-foreground" : "text-muted hover:text-foreground"
-            }`;
-            return item.kind === "route" ? (
-              <Link key={item.href} href={item.href} className={className}>
-                {item.label}
-              </Link>
-            ) : (
-              <a key={item.href} href={item.href} className={className}>
-                {item.label}
+          <nav className="hidden items-center gap-1 lg:flex">
+            {NAV_ITEMS.map((item) => {
+              const active = isActive(item);
+              const className = `rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
+                active ? "text-foreground" : "text-muted hover:text-foreground"
+              }`;
+              return item.kind === "route" ? (
+                <Link key={item.href} href={item.href} className={className}>
+                  {item.label}
+                </Link>
+              ) : (
+                <a key={item.href} href={item.href} className={className}>
+                  {item.label}
+                </a>
+              );
+            })}
+          </nav>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            {cvUrl ? (
+              <a
+                href={cvUrl}
+                download
+                className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/30 transition-transform hover:-translate-y-0.5"
+              >
+                <Download size={15} /> Resume
               </a>
-            );
-          })}
-        </nav>
+            ) : null}
+          </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          {cvUrl ? (
-            <a
-              href={cvUrl}
-              download
-              className="inline-flex items-center gap-2 rounded-lg bg-gradient-to-br from-violet-500 to-pink-500 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/30 transition-transform hover:-translate-y-0.5"
-            >
-              <Download size={15} /> Resume
-            </a>
-          ) : null}
+          <button
+            type="button"
+            aria-label="Open menu"
+            onClick={() => setMobileOpen(true)}
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground lg:hidden"
+          >
+            <Menu size={22} />
+          </button>
         </div>
+      </header>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          onClick={() => setMobileOpen(true)}
-          className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground lg:hidden"
-        >
-          <Menu size={22} />
-        </button>
-      </div>
-
-      {/* Full-screen mobile menu */}
+      {/* Full-screen mobile menu — kept outside <header> since that element
+          gets backdrop-blur once scrolled, and backdrop-filter creates a new
+          containing block for fixed descendants, which shrinks `fixed
+          inset-0` down to the header's own small box instead of the
+          viewport. */}
       <div
         className={`fixed inset-0 z-50 flex flex-col bg-[var(--background)] transition-opacity duration-300 lg:hidden ${
-          mobileOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
+          mobileOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
         }`}
       >
         <div className="flex h-18 items-center justify-between border-b border-white/10 px-6">
-          <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5">
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-2.5"
+          >
             <NavbarLogo photoUrl={photoUrl} name={name} size={36} />
-            <span className="font-display gradient-text text-lg font-bold">{name}</span>
+            <span className="font-display gradient-text text-lg font-bold">
+              {name}
+            </span>
           </Link>
           <button
             type="button"
@@ -233,16 +247,29 @@ export function Navbar({
               }`;
               const content = (
                 <>
-                  <Icon size={20} className={active ? "text-accent-violet" : ""} />
+                  <Icon
+                    size={20}
+                    className={active ? "text-accent-violet" : ""}
+                  />
                   {item.label}
                 </>
               );
               return item.kind === "route" ? (
-                <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={className}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={className}
+                >
                   {content}
                 </Link>
               ) : (
-                <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className={className}>
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={className}
+                >
                   {content}
                 </a>
               );
@@ -279,6 +306,6 @@ export function Navbar({
           </div>
         </div>
       </div>
-    </header>
+    </>
   );
 }
