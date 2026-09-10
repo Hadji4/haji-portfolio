@@ -1,5 +1,5 @@
 -- AlterTable
-ALTER TABLE `adminuser` ALTER COLUMN `updatedAt` DROP DEFAULT;
+ALTER TABLE `AdminUser` ALTER COLUMN `updatedAt` DROP DEFAULT;
 
 -- AlterTable
-ALTER TABLE `sitesettings` ADD COLUMN `heroPhotoUrl` VARCHAR(191) NULL;
+ALTER TABLE `SiteSettings` ADD COLUMN `heroPhotoUrl` VARCHAR(191) NULL;
