@@ -1,7 +1,8 @@
 const WORDS_PER_MINUTE = 200;
 
-export function readingTime(markdown: string): string {
-  const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+export function readingTime(contentHtml: string): string {
+  const text = contentHtml.replace(/<[^>]*>/g, " ");
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
   const minutes = Math.max(1, Math.round(words / WORDS_PER_MINUTE));
   return `${minutes} min read`;
 }

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { RichTextEditor } from "./RichTextEditor";
 import { SubmitButton } from "./SubmitButton";
 
 export type BlogPostFormValues = {
   title: string;
+  metaTitle: string | null;
   slug: string;
   excerpt: string;
   content: string;
@@ -23,7 +23,6 @@ export function BlogPostForm({
   defaultValues?: Partial<BlogPostFormValues>;
 }) {
   const [content, setContent] = useState(defaultValues?.content ?? "");
-  const [tab, setTab] = useState<"write" | "preview">("write");
 
   return (
     <form action={action} className="admin-card max-w-3xl space-y-5">
@@ -45,54 +44,27 @@ export function BlogPostForm({
       </div>
 
       <div>
-        <label className="admin-label">Excerpt (shown on the blog list, max 300 chars)</label>
+        <label className="admin-label">
+          SEO Meta Title <span className="font-normal text-muted">(optional — shown in search results and the browser tab; defaults to Title)</span>
+        </label>
+        <input
+          name="metaTitle"
+          defaultValue={defaultValues?.metaTitle ?? ""}
+          className="admin-input"
+          placeholder={defaultValues?.title || "e.g. How We Cut CBHI Reconciliation Time by 80% | Haji Omer Sheno"}
+          maxLength={200}
+        />
+      </div>
+
+      <div>
+        <label className="admin-label">Excerpt (shown on the blog list and as the SEO meta description, max 300 chars)</label>
         <textarea name="excerpt" required rows={2} defaultValue={defaultValues?.excerpt} className="admin-input" />
       </div>
 
       <div>
-        <div className="mb-1.5 flex items-center justify-between">
-          <label className="admin-label mb-0">Content (Markdown)</label>
-          <div className="flex gap-1 rounded-md border border-white/10 p-0.5 text-xs">
-            <button
-              type="button"
-              onClick={() => setTab("write")}
-              className={`rounded px-2.5 py-1 ${tab === "write" ? "bg-violet-500/20 text-foreground" : "text-muted"}`}
-            >
-              Write
-            </button>
-            <button
-              type="button"
-              onClick={() => setTab("preview")}
-              className={`rounded px-2.5 py-1 ${tab === "preview" ? "bg-violet-500/20 text-foreground" : "text-muted"}`}
-            >
-              Preview
-            </button>
-          </div>
-        </div>
-        {tab === "write" ? (
-          <textarea
-            name="content"
-            required
-            rows={16}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="admin-input font-mono text-sm"
-            placeholder={"## Heading\n\nWrite your post in Markdown — **bold**, _italic_, `code`, lists, links, images..."}
-          />
-        ) : (
-          <>
-            <input type="hidden" name="content" value={content} />
-            <div className="admin-input prose-invert min-h-[24rem] overflow-y-auto">
-              {content ? (
-                <article className="prose prose-invert prose-sm max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-                </article>
-              ) : (
-                <p className="text-muted">Nothing to preview yet.</p>
-              )}
-            </div>
-          </>
-        )}
+        <label className="admin-label">Content</label>
+        <input type="hidden" name="content" value={content} />
+        <RichTextEditor value={content} onChange={setContent} placeholder="Write your post..." />
       </div>
 
       <div className="grid gap-5 sm:grid-cols-2">

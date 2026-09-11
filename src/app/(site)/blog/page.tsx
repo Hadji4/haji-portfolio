@@ -12,7 +12,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const name = settings?.heroName ?? "Haji Omer Sheno";
   const title = settings?.heroTitle ?? "Digital Health Systems Architect";
   return {
-    title: `Blog | ${name}`,
+    // Not "Blog | {name}" — the root layout's title template already
+    // appends "| {name}", so doing it here too would duplicate it.
+    title: "Blog",
     description: `Writing on health tech, full-stack development and building software for real institutions, by ${name} — ${title}.`,
     alternates: {
       canonical: "/blog",
@@ -61,6 +63,8 @@ export default async function BlogListPage() {
                   src={post.coverImageUrl}
                   alt={post.title}
                   className="mb-5 h-40 w-full rounded-xl object-cover"
+                  loading="lazy"
+                  decoding="async"
                 />
               ) : null}
               <div className="mb-3 flex items-center gap-3 text-xs text-muted">

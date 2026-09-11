@@ -21,6 +21,7 @@ export default async function EditBlogPostPage({
         action={boundUpdate}
         defaultValues={{
           title: post.title,
+          metaTitle: post.metaTitle,
           slug: post.slug,
           excerpt: post.excerpt,
           content: post.content,

@@ -209,6 +209,7 @@ exports.Prisma.BlogPostScalarFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  metaTitle: 'metaTitle',
   excerpt: 'excerpt',
   content: 'content',
   coverImageUrl: 'coverImageUrl',
@@ -334,6 +335,7 @@ exports.Prisma.BlogPostOrderByRelevanceFieldEnum = {
   id: 'id',
   slug: 'slug',
   title: 'title',
+  metaTitle: 'metaTitle',
   excerpt: 'excerpt',
   content: 'content',
   coverImageUrl: 'coverImageUrl'

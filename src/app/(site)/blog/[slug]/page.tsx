@@ -1,25 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown, { type Components } from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeHighlight from "rehype-highlight";
-import "highlight.js/styles/atom-one-dark.css";
 import { ArrowLeft, CalendarDays, Clock } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { LightboxImage } from "@/components/LightboxImage";
+import { BlogContent } from "@/components/BlogContent";
 import { ShareButtons } from "@/components/ShareButtons";
 import { readingTime } from "@/lib/reading-time";
 import { SITE_URL, toSafeJsonLd } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
-
-const markdownComponents: Components = {
-  img: ({ src, alt }) =>
-    typeof src === "string" ? (
-      <LightboxImage src={src} alt={alt ?? ""} className="rounded-xl" />
-    ) : null,
-};
 
 async function getPost(slug: string) {
   return prisma.blogPost.findUnique({ where: { slug } });
@@ -34,16 +24,17 @@ export async function generateMetadata({
   const post = await getPost(slug);
   if (!post || !post.published) return {};
 
-  const settings = await prisma.siteSettings.findUnique({ where: { id: 1 } });
-  const name = settings?.heroName ?? "Haji Omer Sheno";
+  const seoTitle = post.metaTitle || post.title;
 
   return {
-    title: `${post.title} | ${name}`,
+    // Not "{seoTitle} | {name}" — the root layout's title template already
+    // appends "| {name}", so doing it here too would duplicate it.
+    title: seoTitle,
     description: post.excerpt,
     alternates: { canonical: `/blog/${post.slug}` },
     keywords: post.tags as string[],
     openGraph: {
-      title: post.title,
+      title: seoTitle,
       description: post.excerpt,
       url: `/blog/${post.slug}`,
       type: "article",
@@ -53,7 +44,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: post.title,
+      title: seoTitle,
       description: post.excerpt,
       images: post.coverImageUrl ? [post.coverImageUrl] : undefined,
     },
@@ -135,15 +126,7 @@ export default async function BlogPostPage({
         <ShareButtons url={`${SITE_URL}/blog/${post.slug}`} title={post.title} />
       </div>
 
-      <article className="prose prose-invert mt-10 max-w-none">
-        <ReactMarkdown
-          remarkPlugins={[remarkGfm]}
-          rehypePlugins={[rehypeHighlight]}
-          components={markdownComponents}
-        >
-          {post.content}
-        </ReactMarkdown>
-      </article>
+      <BlogContent html={post.content} />
     </main>
   );
 }

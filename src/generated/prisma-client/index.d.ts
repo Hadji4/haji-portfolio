@@ -9287,6 +9287,7 @@ export namespace Prisma {
     id: string | null
     slug: string | null
     title: string | null
+    metaTitle: string | null
     excerpt: string | null
     content: string | null
     coverImageUrl: string | null
@@ -9300,6 +9301,7 @@ export namespace Prisma {
     id: string | null
     slug: string | null
     title: string | null
+    metaTitle: string | null
     excerpt: string | null
     content: string | null
     coverImageUrl: string | null
@@ -9313,6 +9315,7 @@ export namespace Prisma {
     id: number
     slug: number
     title: number
+    metaTitle: number
     excerpt: number
     content: number
     coverImageUrl: number
@@ -9329,6 +9332,7 @@ export namespace Prisma {
     id?: true
     slug?: true
     title?: true
+    metaTitle?: true
     excerpt?: true
     content?: true
     coverImageUrl?: true
@@ -9342,6 +9346,7 @@ export namespace Prisma {
     id?: true
     slug?: true
     title?: true
+    metaTitle?: true
     excerpt?: true
     content?: true
     coverImageUrl?: true
@@ -9355,6 +9360,7 @@ export namespace Prisma {
     id?: true
     slug?: true
     title?: true
+    metaTitle?: true
     excerpt?: true
     content?: true
     coverImageUrl?: true
@@ -9442,6 +9448,7 @@ export namespace Prisma {
     id: string
     slug: string
     title: string
+    metaTitle: string | null
     excerpt: string
     content: string
     coverImageUrl: string | null
@@ -9473,6 +9480,7 @@ export namespace Prisma {
     id?: boolean
     slug?: boolean
     title?: boolean
+    metaTitle?: boolean
     excerpt?: boolean
     content?: boolean
     coverImageUrl?: boolean
@@ -9489,6 +9497,7 @@ export namespace Prisma {
     id?: boolean
     slug?: boolean
     title?: boolean
+    metaTitle?: boolean
     excerpt?: boolean
     content?: boolean
     coverImageUrl?: boolean
@@ -9499,7 +9508,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "excerpt" | "content" | "coverImageUrl" | "tags" | "published" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["blogPost"]>
+  export type BlogPostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "slug" | "title" | "metaTitle" | "excerpt" | "content" | "coverImageUrl" | "tags" | "published" | "publishedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["blogPost"]>
 
   export type $BlogPostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "BlogPost"
@@ -9508,6 +9517,7 @@ export namespace Prisma {
       id: string
       slug: string
       title: string
+      metaTitle: string | null
       excerpt: string
       content: string
       coverImageUrl: string | null
@@ -9888,6 +9898,7 @@ export namespace Prisma {
     readonly id: FieldRef<"BlogPost", 'String'>
     readonly slug: FieldRef<"BlogPost", 'String'>
     readonly title: FieldRef<"BlogPost", 'String'>
+    readonly metaTitle: FieldRef<"BlogPost", 'String'>
     readonly excerpt: FieldRef<"BlogPost", 'String'>
     readonly content: FieldRef<"BlogPost", 'String'>
     readonly coverImageUrl: FieldRef<"BlogPost", 'String'>
@@ -12219,6 +12230,7 @@ export namespace Prisma {
     id: 'id',
     slug: 'slug',
     title: 'title',
+    metaTitle: 'metaTitle',
     excerpt: 'excerpt',
     content: 'content',
     coverImageUrl: 'coverImageUrl',
@@ -12392,6 +12404,7 @@ export namespace Prisma {
     id: 'id',
     slug: 'slug',
     title: 'title',
+    metaTitle: 'metaTitle',
     excerpt: 'excerpt',
     content: 'content',
     coverImageUrl: 'coverImageUrl'
@@ -13031,6 +13044,7 @@ export namespace Prisma {
     id?: StringFilter<"BlogPost"> | string
     slug?: StringFilter<"BlogPost"> | string
     title?: StringFilter<"BlogPost"> | string
+    metaTitle?: StringNullableFilter<"BlogPost"> | string | null
     excerpt?: StringFilter<"BlogPost"> | string
     content?: StringFilter<"BlogPost"> | string
     coverImageUrl?: StringNullableFilter<"BlogPost"> | string | null
@@ -13045,6 +13059,7 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
+    metaTitle?: SortOrderInput | SortOrder
     excerpt?: SortOrder
     content?: SortOrder
     coverImageUrl?: SortOrderInput | SortOrder
@@ -13063,6 +13078,7 @@ export namespace Prisma {
     OR?: BlogPostWhereInput[]
     NOT?: BlogPostWhereInput | BlogPostWhereInput[]
     title?: StringFilter<"BlogPost"> | string
+    metaTitle?: StringNullableFilter<"BlogPost"> | string | null
     excerpt?: StringFilter<"BlogPost"> | string
     content?: StringFilter<"BlogPost"> | string
     coverImageUrl?: StringNullableFilter<"BlogPost"> | string | null
@@ -13077,6 +13093,7 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
+    metaTitle?: SortOrderInput | SortOrder
     excerpt?: SortOrder
     content?: SortOrder
     coverImageUrl?: SortOrderInput | SortOrder
@@ -13097,6 +13114,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"BlogPost"> | string
     slug?: StringWithAggregatesFilter<"BlogPost"> | string
     title?: StringWithAggregatesFilter<"BlogPost"> | string
+    metaTitle?: StringNullableWithAggregatesFilter<"BlogPost"> | string | null
     excerpt?: StringWithAggregatesFilter<"BlogPost"> | string
     content?: StringWithAggregatesFilter<"BlogPost"> | string
     coverImageUrl?: StringNullableWithAggregatesFilter<"BlogPost"> | string | null
@@ -13844,6 +13862,7 @@ export namespace Prisma {
     id?: string
     slug: string
     title: string
+    metaTitle?: string | null
     excerpt: string
     content: string
     coverImageUrl?: string | null
@@ -13858,6 +13877,7 @@ export namespace Prisma {
     id?: string
     slug: string
     title: string
+    metaTitle?: string | null
     excerpt: string
     content: string
     coverImageUrl?: string | null
@@ -13872,6 +13892,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
     excerpt?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13886,6 +13907,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
     excerpt?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13900,6 +13922,7 @@ export namespace Prisma {
     id?: string
     slug: string
     title: string
+    metaTitle?: string | null
     excerpt: string
     content: string
     coverImageUrl?: string | null
@@ -13914,6 +13937,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
     excerpt?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -13928,6 +13952,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     slug?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    metaTitle?: NullableStringFieldUpdateOperationsInput | string | null
     excerpt?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     coverImageUrl?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14667,6 +14692,7 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
+    metaTitle?: SortOrder
     excerpt?: SortOrder
     content?: SortOrder
     coverImageUrl?: SortOrder
@@ -14681,6 +14707,7 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
+    metaTitle?: SortOrder
     excerpt?: SortOrder
     content?: SortOrder
     coverImageUrl?: SortOrder
@@ -14694,6 +14721,7 @@ export namespace Prisma {
     id?: SortOrder
     slug?: SortOrder
     title?: SortOrder
+    metaTitle?: SortOrder
     excerpt?: SortOrder
     content?: SortOrder
     coverImageUrl?: SortOrder

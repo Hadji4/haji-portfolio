@@ -8,7 +8,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await prisma.siteSettings.findUnique({ where: { id: 1 } });
   const name = settings?.heroName ?? "Haji Omer Sheno";
   return {
-    title: `Gallery | ${name}`,
+    // Not "Gallery | {name}" — the root layout's title template already
+    // appends "| {name}", so doing it here too would duplicate it.
+    title: "Gallery",
     description: `Photos and videos from deployments, installations and projects by ${name}.`,
     alternates: { canonical: "/gallery" },
     openGraph: {

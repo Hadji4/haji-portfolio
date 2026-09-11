@@ -19,7 +19,11 @@ export async function generateMetadata(): Promise<Metadata> {
     "I design and build powerful digital systems for hospitals, clinics, and pharmacies.";
 
   return {
-    title: `${name} | ${title}`,
+    // `absolute` bypasses the root layout's title template (which appends
+    // "| {name}"), since this title already has {name} in it in a
+    // different position — using a plain string here would produce
+    // "{name} | {title} | {name}".
+    title: { absolute: `${name} | ${title}` },
     description,
     alternates: { canonical: "/" },
     openGraph: { title: `${name} | ${title}`, description, url: "/" },

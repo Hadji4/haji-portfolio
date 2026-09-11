@@ -63,10 +63,13 @@ export function LightboxImage({
   src,
   alt,
   className,
+  priority = false,
 }: {
   src: string;
   alt: string;
   className?: string;
+  /** Set for above-the-fold images so they load eagerly instead of lazily. */
+  priority?: boolean;
 }) {
   const { open, show, hide } = useLightbox();
 
@@ -79,7 +82,13 @@ export function LightboxImage({
         aria-label={`View ${alt || "image"} full size`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={src} alt={alt} className={className} />
+        <img
+          src={src}
+          alt={alt}
+          className={className}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+        />
       </button>
       {open ? <LightboxOverlay src={src} alt={alt} onClose={hide} /> : null}
     </>

@@ -118,13 +118,19 @@ export const documentSchema = z.object({
 
 export const blogPostSchema = z.object({
   title: z.string().min(2, "Title is too short").max(200),
+  metaTitle: z.string().max(200).optional().or(z.literal("")),
   slug: z
     .string()
     .min(2)
     .max(200)
     .regex(/^[a-z0-9-]+$/, "Use lowercase letters, numbers and hyphens only"),
   excerpt: z.string().min(10, "Excerpt is too short").max(300),
-  content: z.string().min(20, "Content is too short"),
+  content: z
+    .string()
+    .refine(
+      (html) => html.replace(/<[^>]*>/g, "").trim().length >= 20,
+      "Content is too short",
+    ),
   tags: z.array(z.string().min(1)),
   published: z.boolean(),
 });

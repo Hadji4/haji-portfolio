@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { blogPostSchema, parseFormData } from "@/lib/validation";
-import { deleteUploadedImage, saveUploadedImage } from "@/lib/upload-image";
+import { deleteUploadedImage, saveUploadedImage, validateImageFile } from "@/lib/upload-image";
+import { sanitizeBlogContent } from "@/lib/sanitize-content";
 
 function tagsToArray(value: FormDataEntryValue | null) {
   return String(value ?? "")
@@ -15,20 +16,40 @@ function tagsToArray(value: FormDataEntryValue | null) {
 }
 
 function parseBlogForm(formData: FormData) {
-  return parseFormData(blogPostSchema, {
+  const data = parseFormData(blogPostSchema, {
     title: formData.get("title"),
+    metaTitle: formData.get("metaTitle"),
     slug: formData.get("slug"),
     excerpt: formData.get("excerpt"),
     content: formData.get("content"),
     tags: tagsToArray(formData.get("tags")),
     published: formData.get("published") === "on",
   });
+  return {
+    ...data,
+    metaTitle: data.metaTitle || null,
+    content: sanitizeBlogContent(data.content),
+  };
 }
 
 async function maybeUploadCover(formData: FormData) {
   const file = formData.get("coverImage");
   if (!(file instanceof File) || file.size === 0) return undefined;
   return saveUploadedImage(file, "blog", "cover");
+}
+
+export async function uploadBlogContentImage(
+  formData: FormData,
+): Promise<{ url: string } | { error: string }> {
+  const session = await auth();
+  if (!session) return { error: "Unauthorized" };
+
+  const file = formData.get("image");
+  const error = validateImageFile(file);
+  if (error) return { error };
+
+  const url = await saveUploadedImage(file as File, "blog-content", "image");
+  return { url };
 }
 
 export async function createPost(formData: FormData) {

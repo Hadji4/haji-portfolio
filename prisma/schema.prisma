@@ -107,6 +107,7 @@ model BlogPost {
   id            String    @id @default(cuid())
   slug          String    @unique
   title         String
+  metaTitle     String?   @db.VarChar(200)
   excerpt       String    @db.VarChar(300)
   content       String    @db.Text
   coverImageUrl String?
