@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { Home, ArrowLeft } from "lucide-react";
 
+// Must render fresh per request, not be statically prerendered — see the
+// comment in src/app/admin/login/page.tsx for why (CSP nonce mismatch).
+export const dynamic = "force-dynamic";
+
 export default function NotFound() {
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-2xl flex-col items-center justify-center px-6 text-center">

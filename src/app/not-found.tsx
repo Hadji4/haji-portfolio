@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   title: "Page Not Found",
 };
 
+// Must render fresh per request, not be statically prerendered — see the
+// comment in src/app/admin/login/page.tsx for why (CSP nonce mismatch).
+export const dynamic = "force-dynamic";
+
 export default async function RootNotFound() {
   const settings = await prisma.siteSettings.findUnique({ where: { id: 1 } });
   const name = settings?.heroName ?? "Haji Omer Sheno";
