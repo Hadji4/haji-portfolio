@@ -36,8 +36,8 @@ This produces:
 - `.next/standalone/` — the self-contained server (`server.js` + only the
   `node_modules` it actually uses)
 - `.next/static/` — built CSS/JS assets (not included in `standalone/` automatically)
-- `public/` — static files or already-uploaded content (already partly present in
-  standalone's tracing, but copy it explicitly to be safe)
+- `public/` — static assets that ship with the app (logo, favicon, etc.) — this is
+  **not** where admin uploads live; see the `storage/uploads/` note below
 
 ## 2. Assemble the deployment folder
 
@@ -53,9 +53,17 @@ cp prisma.config.ts deploy/
 ```
 
 `deploy/` now contains everything needed to run the app: `server.js`, a pruned
-`node_modules`, the built `.next` assets, your `public/` files (including any already
-in `public/uploads/`), and the Prisma schema + migrations (needed once, to run
-migrations directly on the server).
+`node_modules`, the built `.next` assets, your `public/` static files, and the
+Prisma schema + migrations (needed once, to run migrations directly on the server).
+
+**Admin uploads live outside this folder entirely.** Avatars, the hero photo,
+gallery media, documents and blog cover images are all written at runtime to
+`storage/uploads/` (relative to the app root, *not* under `public/` — see the
+comment in `src/lib/upload-storage.ts` for why). That directory is created
+automatically the first time something is uploaded, via `mkdir(..., { recursive: true })`
+in `src/lib/upload-file.ts` / `upload-image.ts`, so a fresh deploy doesn't need to
+pre-create it. What you must never do is overwrite or delete an existing
+`storage/uploads/` directory on the server when redeploying — see step 6.
 
 ## 3. Upload and configure in cPanel
 
@@ -107,8 +115,9 @@ Back in **Setup Node.js App**, click **Restart**. Visit
 
 ## 6. Redeploying updates later
 
-`public/uploads/` holds real content (avatars, gallery photos/videos, documents, blog
-cover images) written at runtime — **never overwrite this directory** on redeploy.
+`storage/uploads/` holds real content (avatars, gallery photos/videos, documents, blog
+cover images) written at runtime — **never overwrite or delete this directory** on
+redeploy. It lives at the application root, alongside `server.js`, not under `public/`.
 
 ```bash
 # Locally: pull latest code, then
@@ -116,16 +125,20 @@ npm run build
 rm -rf deploy && mkdir deploy
 cp -r .next/standalone/* deploy/
 mkdir -p deploy/.next && cp -r .next/static deploy/.next/static
+cp -r public deploy/public
 cp -r prisma deploy/prisma
 cp prisma.config.ts deploy/
-# NOTE: deliberately NOT copying public/ this time — it already exists on the
-# server with real uploads in it. Only sync new *code* changes to public/ (if any
-# static assets changed) by hand, or use rsync with --exclude=uploads.
+# NOTE: this does not touch storage/uploads/ at all — it isn't part of the
+# build output, so there's nothing to accidentally overwrite as long as you
+# upload deploy/'s contents INTO the existing app root rather than replacing
+# the app root wholesale (e.g. don't `rsync --delete`, don't wipe the folder
+# before uploading).
 ```
 
-Upload `deploy/` over the existing server folder (overwrite `server.js`, `.next/`,
-`node_modules/`, but leave `public/uploads/` alone), run `npx prisma migrate deploy`
-again if the update included a schema change, then **Restart** the app in cPanel.
+Upload `deploy/`'s contents over the existing server folder (overwrite `server.js`,
+`.next/`, `node_modules/`, `public/`), leaving `storage/uploads/` untouched, run
+`npx prisma migrate deploy` again if the update included a schema change, then
+**Restart** the app in cPanel.
 
 ## Troubleshooting
 
@@ -135,7 +148,7 @@ again if the update included a schema change, then **Restart** the app in cPanel
 - **Login redirect loop**: `AUTH_SECRET` is missing or `NEXT_PUBLIC_SITE_URL` doesn't
   match the real domain (cookies won't be trusted otherwise).
 - **Uploads fail / "ENOENT" errors**: the app process needs write permission on
-  `public/uploads/` under the application root — confirm the folder exists and isn't
-  owned by a different user than the Node app runs as.
+  `storage/uploads/` under the application root (created automatically on first
+  upload) — confirm it isn't owned by a different user than the Node app runs as.
 - **Old content after redeploy**: hard-refresh / check you restarted the Node app —
   it doesn't pick up new files until restarted.

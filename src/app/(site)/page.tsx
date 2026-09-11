@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, toSafeJsonLd } from "@/lib/site";
 import { Hero } from "@/components/Hero";
 import { About } from "@/components/About";
 import { Skills } from "@/components/Skills";
@@ -59,7 +59,7 @@ export default async function Home() {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: toSafeJsonLd(jsonLd) }} />
       <main className="mx-auto max-w-6xl px-6 py-10 lg:px-10">
         <Hero
           name={heroName}

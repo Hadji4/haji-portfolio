@@ -4,6 +4,8 @@ import path from "path";
 import { Readable } from "stream";
 import { NextRequest } from "next/server";
 import { UPLOADS_ROOT } from "@/lib/upload-storage";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 // Serves admin-uploaded files (images, videos, documents) from outside the
 // `public/` folder. Next's production server only scans `public/` once at
@@ -42,6 +44,19 @@ export async function GET(
   const filePath = path.join(UPLOADS_ROOT, ...segments);
   if (!filePath.startsWith(UPLOADS_ROOT + path.sep)) {
     return new Response("Not found", { status: 404 });
+  }
+
+  // Documents carry an explicit publish flag (used to gate the public
+  // /documents listing) — enforce it here too, so an unpublished file isn't
+  // still fetchable by anyone who has or guesses its URL. Logged-in admins
+  // can still preview unpublished documents.
+  if (segments[0] === "documents") {
+    const fileUrl = `/uploads/${segments.join("/")}`;
+    const doc = await prisma.document.findFirst({ where: { fileUrl }, select: { published: true } });
+    if (doc && !doc.published) {
+      const session = await auth();
+      if (!session) return new Response("Not found", { status: 404 });
+    }
   }
 
   let fileStat;

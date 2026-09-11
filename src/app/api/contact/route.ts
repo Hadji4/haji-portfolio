@@ -1,8 +1,28 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validation";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
-export async function POST(request: Request) {
+const MAX_BODY_BYTES = 20 * 1024; // form has no attachments; 20KB is generous
+
+export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterSeconds } = checkRateLimit(`contact:${ip}`, {
+    limit: 5,
+    windowMs: 10 * 60 * 1000,
+  });
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(retryAfterSeconds) } },
+    );
+  }
+
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (contentLength > MAX_BODY_BYTES) {
+    return NextResponse.json({ error: "Request body too large" }, { status: 413 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();

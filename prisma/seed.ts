@@ -5,10 +5,23 @@ import bcrypt from "bcryptjs";
 const adapter = new PrismaMariaDb(process.env.DATABASE_URL as string);
 const prisma = new PrismaClient({ adapter });
 
+const PLACEHOLDER_PASSWORD = "ChangeThisPassword123!";
+
 async function main() {
   // --- Admin user ---
   const adminEmail = process.env.ADMIN_SEED_EMAIL ?? "hadjiomer9@gmail.com";
-  const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? "ChangeThisPassword123!";
+  const adminPassword = process.env.ADMIN_SEED_PASSWORD ?? PLACEHOLDER_PASSWORD;
+
+  // Refuse to seed a production database with the documented example
+  // password — it's public (it's printed in .env.example and this file's
+  // git history), so an admin account created with it is not a secret.
+  if (process.env.NODE_ENV === "production" && adminPassword === PLACEHOLDER_PASSWORD) {
+    throw new Error(
+      "Refusing to seed: ADMIN_SEED_PASSWORD is unset or still the placeholder value from " +
+        ".env.example. Set a unique, strong ADMIN_SEED_PASSWORD before seeding production.",
+    );
+  }
+
   const hashed = await bcrypt.hash(adminPassword, 12);
 
   await prisma.adminUser.upsert({

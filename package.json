@@ -7,10 +7,12 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "postinstall": "prisma generate",
     "db:seed": "tsx --env-file=.env prisma/seed.ts",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "prune:pageviews": "tsx --env-file=.env scripts/prune-pageviews.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
@@ -44,6 +46,12 @@
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
     "tsx": "^4.23.13",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "mariadb": "3.4.7",
+    "deepmerge-ts": "8.0.2",
+    "mysql2": "3.24.4"
   }
 }
