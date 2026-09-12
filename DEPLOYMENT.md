@@ -1,5 +1,20 @@
 # Deploying to cPanel (haji.horooinnovations.com)
 
+> **Before every build you ship to production:** `NEXT_PUBLIC_*` environment
+> variables (currently just `NEXT_PUBLIC_SITE_URL`) are baked into the compiled
+> JavaScript at `next build` time — they are **not** read from the server's
+> `.env` at runtime, even though every other env var is. If you build locally
+> with your own dev `.env` (which points `NEXT_PUBLIC_SITE_URL` at
+> `http://localhost:3000`) and ship that build, every canonical link, RSS item,
+> Open Graph URL, and JSON-LD URL on the live site will permanently say
+> `localhost` until you rebuild correctly — this exact bug has happened once
+> already. Fix: create a local, gitignored `.env.production.local` with the
+> real production value —
+> `NEXT_PUBLIC_SITE_URL="https://haji.horooinnovations.com"` — before running
+> `npm run build` for a deploy. Next.js prefers `.env.production.local` over
+> `.env` automatically for production builds, so your regular `.env` stays
+> untouched for local dev.
+
 This app is configured with Next.js's `output: "standalone"` build — it produces a
 minimal, self-contained server instead of requiring a full `npm install` on the
 production machine. That matters on shared/cPanel hosting, which is usually slow or
