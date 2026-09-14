@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 import { RichTextEditor } from "./RichTextEditor";
 import { SubmitButton } from "./SubmitButton";
+import type { ActionState } from "@/lib/action-state";
 
 export type BlogPostFormValues = {
   title: string;
@@ -19,13 +21,22 @@ export function BlogPostForm({
   action,
   defaultValues,
 }: {
-  action: (formData: FormData) => Promise<void>;
+  action: (prevState: ActionState, formData: FormData) => Promise<ActionState>;
   defaultValues?: Partial<BlogPostFormValues>;
 }) {
   const [content, setContent] = useState(defaultValues?.content ?? "");
+  const [state, formAction] = useActionState<ActionState, FormData>(action, {});
+
+  // A failed submission (e.g. a validation error) re-renders this same form
+  // instead of navigating away, so `content` above is untouched — but show
+  // the error so it isn't a silent no-op, and don't lose the rest of what
+  // was typed.
+  useEffect(() => {
+    if (state.error) toast.error(state.error);
+  }, [state]);
 
   return (
-    <form action={action} className="admin-card max-w-3xl space-y-5">
+    <form action={formAction} className="admin-card max-w-3xl space-y-5">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label className="admin-label">Title</label>
