@@ -29,6 +29,10 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
+  /* Safety net: nothing on the page — most commonly an author-uploaded
+     photo at its full camera resolution — should be able to force
+     horizontal scrolling, regardless of what causes it. */
+  overflow-x: hidden;
 }
 
 body {
@@ -42,6 +46,16 @@ body {
     ),
     radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 22%);
   background-attachment: fixed;
+  overflow-x: hidden;
+}
+
+/* Belt-and-suspenders on top of Tailwind's Preflight reset: every image
+   and video, anywhere on the site (blog content, gallery, uploads),
+   scales down to fit its container instead of overflowing it. */
+img,
+video {
+  max-width: 100%;
+  height: auto;
 }
 
 .font-display {

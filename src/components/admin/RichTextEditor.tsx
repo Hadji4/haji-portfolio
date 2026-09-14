@@ -74,17 +74,25 @@ function Toolbar({ editor }: { editor: Editor }) {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "image/jpeg,image/png,image/webp,image/gif";
+    input.multiple = true;
     input.onchange = async () => {
-      const file = input.files?.[0];
-      if (!file) return;
-      const formData = new FormData();
-      formData.set("image", file);
-      const result = await uploadBlogContentImage(formData);
-      if ("error" in result) {
-        window.alert(result.error);
-        return;
+      const files = Array.from(input.files ?? []);
+      if (files.length === 0) return;
+
+      // Upload and insert one at a time (rather than Promise.all) so
+      // images land in the order they were picked, and each gets its own
+      // paragraph afterward — otherwise several images in a row render
+      // packed edge-to-edge with no room to add a caption between them.
+      for (const file of files) {
+        const formData = new FormData();
+        formData.set("image", file);
+        const result = await uploadBlogContentImage(formData);
+        if ("error" in result) {
+          window.alert(`${file.name}: ${result.error}`);
+          continue;
+        }
+        editor.chain().focus().setImage({ src: result.url }).insertContent("<p></p>").run();
       }
-      editor.chain().focus().setImage({ src: result.url }).run();
     };
     input.click();
   }, [editor]);
@@ -167,7 +175,7 @@ function Toolbar({ editor }: { editor: Editor }) {
       <ToolbarButton label="Link" active={editor.isActive("link")} onClick={setLink}>
         <LinkIcon size={16} />
       </ToolbarButton>
-      <ToolbarButton label="Insert image" onClick={addImage}>
+      <ToolbarButton label="Insert image(s)" onClick={addImage}>
         <ImageIcon size={16} />
       </ToolbarButton>
       <ToolbarDivider />
