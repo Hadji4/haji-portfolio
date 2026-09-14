@@ -18,8 +18,8 @@
   "/(site)/documents/page": "app/(site)/documents/page.js",
   "/(site)/gallery/page": "app/(site)/gallery/page.js",
   "/(site)/page": "app/(site)/page.js",
-  "/admin/(dashboard)/analytics/page": "app/admin/(dashboard)/analytics/page.js",
   "/(site)/projects/[slug]/page": "app/(site)/projects/[slug]/page.js",
+  "/admin/(dashboard)/analytics/page": "app/admin/(dashboard)/analytics/page.js",
   "/admin/(dashboard)/blog/page": "app/admin/(dashboard)/blog/page.js",
   "/admin/(dashboard)/documents/page": "app/admin/(dashboard)/documents/page.js",
   "/admin/(dashboard)/education/page": "app/admin/(dashboard)/education/page.js",
@@ -30,6 +30,6 @@
   "/admin/(dashboard)/profile/page": "app/admin/(dashboard)/profile/page.js",
   "/admin/(dashboard)/projects/page": "app/admin/(dashboard)/projects/page.js",
   "/admin/(dashboard)/settings/page": "app/admin/(dashboard)/settings/page.js",
-  "/admin/login/page": "app/admin/login/page.js",
-  "/admin/(dashboard)/skills/page": "app/admin/(dashboard)/skills/page.js"
+  "/admin/(dashboard)/skills/page": "app/admin/(dashboard)/skills/page.js",
+  "/admin/login/page": "app/admin/login/page.js"
 }
