@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/robots.txt/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"C:\\Users\\user\\Desktop\\Haji Omer-Web\\site\\src\\app\\robots.txt\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};

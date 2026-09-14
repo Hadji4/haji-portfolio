@@ -1,0 +1,1 @@
+globalThis.__RSC_MANIFEST=(globalThis.__RSC_MANIFEST||{});globalThis.__RSC_MANIFEST["/uploads/[...path]/route"]={"moduleLoading":{"prefix":"/_next/"},"ssrModuleMapping":{},"edgeSSRModuleMapping":{},"clientModules":{},"entryCSSFiles":{"C:\\Users\\user\\Desktop\\Haji Omer-Web\\site\\src\\app\\uploads\\[...path]\\route":[]},"rscModuleMapping":{},"edgeRscModuleMapping":{}};
