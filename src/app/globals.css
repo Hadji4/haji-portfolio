@@ -29,10 +29,6 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 100px;
-  /* Safety net: nothing on the page — most commonly an author-uploaded
-     photo at its full camera resolution — should be able to force
-     horizontal scrolling, regardless of what causes it. */
-  overflow-x: hidden;
 }
 
 body {
@@ -46,19 +42,24 @@ body {
     ),
     radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 22%);
   background-attachment: fixed;
-  overflow-x: hidden;
 }
 
-/* Not adding an img/video max-width rule here on purpose: Tailwind's
-   Preflight already sets max-width:100%/height:auto for images, correctly
-   scoped inside its own cascade layer — which is what lets utility classes
-   like h-64/object-cover (used for fixed-height cropped banners, e.g. blog
-   cover images) override it. A plain, unlayered rule of the same kind here
-   would sit outside Tailwind's layers and — since unlayered CSS always
-   beats layered CSS regardless of specificity — silently win over those
-   utilities instead, stretching every fixed-height image back out to its
-   full natural size. (Exactly what happened here once; don't reintroduce
-   it.) overflow-x: hidden above is the real, layer-safe backstop. */
+/* Two things deliberately NOT done here, both of which were tried and
+   broke something:
+
+   1. `overflow-x: hidden` on html/body. Setting one axis to a non-visible
+      value computes the other to `auto`, which makes the element a scroll
+      container and kills `position: sticky` for every descendant — it
+      silently broke the admin sidebar, the admin topbar and the public
+      navbar all at once. Overflow belongs on the specific container that
+      can overflow (see .blog-content below), never globally.
+
+   2. A plain `img { max-width: 100%; height: auto }` rule. Tailwind's
+      Preflight already does this inside @layer base, which is what lets
+      utilities like h-64/object-cover override it for fixed-height cropped
+      banners (blog cover images). An unlayered copy here outranks every
+      layered rule regardless of specificity, so it stretched those images
+      back out to full natural height. */
 
 .font-display {
   font-family: var(--font-space-grotesk), sans-serif;
