@@ -11,8 +11,12 @@ export function BlogContent({ html }: { html: string }) {
 
   return (
     <>
+      {/* break-words so a long unbroken string (a pasted URL) wraps instead of
+          pushing the page wider than the screen. Scoped to this container
+          rather than set globally — overflow rules on html/body break
+          position: sticky for the whole site's headers and sidebar. */}
       <article
-        className="prose prose-invert mt-10 max-w-none prose-img:cursor-zoom-in prose-img:rounded-xl prose-a:text-accent-violet"
+        className="prose prose-invert mt-10 max-w-none break-words prose-img:cursor-zoom-in prose-img:rounded-xl prose-a:text-accent-violet"
         dangerouslySetInnerHTML={{ __html: html }}
         onClick={(e) => {
           const target = e.target as HTMLElement;
