@@ -1,0 +1,41 @@
+MIT License
+
+Copyright (c) 2026 Haji Omer Sheno
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+NOTE ON CONTENT (not covered by the MIT license above)
+
+The MIT license above applies to the SOURCE CODE of this project only.
+
+It does NOT apply to the personal content in or served by this project,
+which remains the exclusive property of Haji Omer Sheno and is not licensed
+for reuse. This includes, without limitation:
+
+  - Biographical text, the personal story, and profile/"about" copy
+  - Project descriptions, case studies and blog posts
+  - Photographs and images, including the profile and hero photographs
+  - The CV/resume and any uploaded documents
+  - The name "Haji Omer Sheno", and the HOROO Innovations name, branding
+    and logos
+
+You are welcome to use the code to build your own site. Please replace the
+content with your own.

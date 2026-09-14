@@ -122,3 +122,13 @@ Quick checklist before deploying:
 - [ ] `NEXT_PUBLIC_SITE_URL` matches the real production domain
 - [ ] `npx prisma migrate deploy` run against the production database (not `migrate dev`)
 - [ ] Admin password changed from the seeded placeholder
+
+## License
+
+The **source code** is MIT licensed — see [LICENSE](./LICENSE). You're welcome to
+use it to build your own site.
+
+The **personal content** is not: the biography, project write-ups, blog posts,
+photographs, CV, and the "Haji Omer Sheno" and HOROO Innovations names and
+branding all remain the property of Haji Omer Sheno. If you reuse the code,
+please replace the content with your own.
