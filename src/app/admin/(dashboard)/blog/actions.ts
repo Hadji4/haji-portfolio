@@ -7,6 +7,9 @@ import { prisma } from "@/lib/prisma";
 import { blogPostSchema, parseFormData } from "@/lib/validation";
 import { deleteUploadedImage, saveUploadedImage, validateImageFile } from "@/lib/upload-image";
 import { sanitizeBlogContent } from "@/lib/sanitize-content";
+import type { ActionState } from "@/lib/action-state";
+
+export type { ActionState };
 
 function tagsToArray(value: FormDataEntryValue | null) {
   return String(value ?? "")
@@ -52,11 +55,20 @@ export async function uploadBlogContentImage(
   return { url };
 }
 
-export async function createPost(formData: FormData) {
+export async function createPost(
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const session = await auth();
-  if (!session) throw new Error("Unauthorized");
+  if (!session) return { error: "Unauthorized" };
 
-  const data = parseBlogForm(formData);
+  let data;
+  try {
+    data = parseBlogForm(formData);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Invalid input" };
+  }
+
   const coverImageUrl = await maybeUploadCover(formData);
 
   await prisma.blogPost.create({
@@ -73,11 +85,21 @@ export async function createPost(formData: FormData) {
   redirect("/admin/blog");
 }
 
-export async function updatePost(id: string, formData: FormData) {
+export async function updatePost(
+  id: string,
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
   const session = await auth();
-  if (!session) throw new Error("Unauthorized");
+  if (!session) return { error: "Unauthorized" };
 
-  const data = parseBlogForm(formData);
+  let data;
+  try {
+    data = parseBlogForm(formData);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Invalid input" };
+  }
+
   const existing = await prisma.blogPost.findUnique({ where: { id } });
   const coverImageUrl = await maybeUploadCover(formData);
 
