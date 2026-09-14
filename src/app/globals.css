@@ -61,6 +61,29 @@ body {
       layered rule regardless of specificity, so it stretched those images
       back out to full natural height. */
 
+@layer base {
+  /* body is `flex flex-col`, so its children are flex items sized by their
+     content: a column flex line takes the widest item's fit-content width,
+     and fit-content can exceed the container. One unwrappable wide child —
+     the ASCII diagram in a <pre> in a blog post — therefore stretched
+     <main> to 457px inside a 412px body and scrolled the whole page
+     sideways. It also defeated the `overflow-x: auto` Typography puts on
+     <pre>, because the <pre> grew instead of scrolling.
+
+     Giving the children a definite width restores normal block behaviour
+     (fill the parent), so inner overflow containers do their job. Measured
+     in Chrome at 412px: main and the fixed mobile-menu overlay both go
+     457px -> 412px, page scrollWidth 457 -> 412, while header, footer and
+     the toaster are unaffected.
+
+     `min-width: 0` does NOT fix this — the automatic minimum size applies
+     to a flex container's main axis, which is the *vertical* one here.
+     Kept in @layer base so utilities still override it where needed. */
+  body > * {
+    width: 100%;
+  }
+}
+
 .font-display {
   font-family: var(--font-space-grotesk), sans-serif;
 }
