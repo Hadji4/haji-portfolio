@@ -88,10 +88,17 @@ export default async function BlogPostPage({
       </Link>
 
       {post.coverImageUrl ? (
+        /* No fixed height or object-cover here on purpose: cover images are
+           often infographics rather than landscape photos, and cropping one
+           to a banner cuts off its content and shrinks its text past
+           readability. Scaling the whole image to the column width keeps it
+           intact; the card thumbnails on /blog still crop, since a grid
+           needs uniform card heights. */
         <LightboxImage
           src={post.coverImageUrl}
           alt={post.title}
-          className="mt-8 h-64 w-full rounded-2xl object-cover sm:h-80"
+          priority
+          className="mt-8 w-full rounded-2xl"
         />
       ) : null}
 
