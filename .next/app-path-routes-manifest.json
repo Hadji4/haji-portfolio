@@ -15,11 +15,11 @@
   "/admin/(dashboard)/projects/new/page": "/admin/projects/new",
   "/(site)/blog/[slug]/page": "/blog/[slug]",
   "/(site)/blog/page": "/blog",
-  "/(site)/gallery/page": "/gallery",
   "/(site)/documents/page": "/documents",
+  "/(site)/gallery/page": "/gallery",
   "/(site)/page": "/",
-  "/(site)/projects/[slug]/page": "/projects/[slug]",
   "/admin/(dashboard)/analytics/page": "/admin/analytics",
+  "/(site)/projects/[slug]/page": "/projects/[slug]",
   "/admin/(dashboard)/blog/page": "/admin/blog",
   "/admin/(dashboard)/documents/page": "/admin/documents",
   "/admin/(dashboard)/education/page": "/admin/education",
@@ -30,6 +30,6 @@
   "/admin/(dashboard)/profile/page": "/admin/profile",
   "/admin/(dashboard)/projects/page": "/admin/projects",
   "/admin/(dashboard)/settings/page": "/admin/settings",
-  "/admin/(dashboard)/skills/page": "/admin/skills",
-  "/admin/login/page": "/admin/login"
+  "/admin/login/page": "/admin/login",
+  "/admin/(dashboard)/skills/page": "/admin/skills"
 }
